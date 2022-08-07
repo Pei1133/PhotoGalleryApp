@@ -32,13 +32,22 @@ class PhotoCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? GridCell {
+            cell.tag = indexPath.row
             if let photo = vm.getPhoto(at: indexPath.row),
                let first = photo.getFirstImageLink(),
                let url = URL(string: first) {
                 let token = vm.loadImage(from: url) { image in
                     DispatchQueue.main.async {
-                        cell.imageView.image = image
-                        cell.layoutSubviews()
+                        if cell.tag == indexPath.row {
+                            cell.imageView.image = image
+                            cell.layoutSubviews()
+                        }
+                    }
+                }
+                
+                cell.onReuse = {
+                    if let token = token {
+                        self.vm.cancelLoadImage(token)
                     }
                 }
             }

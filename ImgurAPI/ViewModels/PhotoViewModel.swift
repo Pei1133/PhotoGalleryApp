@@ -84,5 +84,10 @@ class PhotoViewModel {
         }
         return token
     }
+    
+    func cancelLoadImage(_ token: UUID?) {
+        if let token = token {
+            imageLoader.cancel(token)
+        }
     }
 }

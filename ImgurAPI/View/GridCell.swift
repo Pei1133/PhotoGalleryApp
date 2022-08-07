@@ -8,6 +8,8 @@
 import UIKit
 
 class GridCell: UICollectionViewCell {
+    var onReuse: () -> Void = {}
+    
     var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -18,6 +20,7 @@ class GridCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        onReuse()
         imageView.image = nil
     }
     
