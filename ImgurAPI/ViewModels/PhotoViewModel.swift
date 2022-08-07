@@ -15,6 +15,7 @@ protocol PhotoViewModelDelegate: AnyObject {
 class PhotoViewModel {
     private var photos = [Gallery]()
     private var currentPage = 0
+    private let maxPage = 5
     private var cancellables: Set<AnyCancellable> = []
     weak var delegate: PhotoViewModelDelegate?
         
@@ -55,6 +56,11 @@ class PhotoViewModel {
     }
     
     func searchGallery() {
+        currentPage += 1
+        if currentPage > maxPage {
+            return
+        }
+        
         imgurAPI.searchGallery(query: "cats", page: currentPage)
             .receive(on: RunLoop.main)
             .sink { error in
@@ -70,6 +76,12 @@ class PhotoViewModel {
                 print("---currentPage: \(self.currentPage)")
                 print("galleries: \(String(describing: galleries.count)), total image count:\(String(describing: totalImages))")
             }.store(in: &self.cancellables)
+    }
+    
+    func searchMore(index: Int) {
+        if index > (self.photoCount - 2) {
+            self.searchGallery()
+        }
     }
     
     func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) -> UUID? {

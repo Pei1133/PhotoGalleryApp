@@ -55,6 +55,10 @@ class PhotoCollectionViewController: UICollectionViewController {
         }
         return UICollectionViewCell()
     }
+
+    // MARK: -UICollectionViewDelegate
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        vm.searchMore(index: indexPath.item)
     }
 }
 
