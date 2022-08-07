@@ -46,6 +46,7 @@ class PhotoCollectionViewController: UICollectionViewController {
         self.collectionView!.backgroundColor = UIColor.black
         self.collectionView!.register(GridCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
+    
     func setupConstraints() {
         NSLayoutConstraint.activate([
             sizeSegmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
@@ -72,13 +73,13 @@ class PhotoCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? GridCell {
-            cell.tag = indexPath.row
-            if let photo = vm.getPhoto(at: indexPath.row),
+            cell.tag = indexPath.item
+            if let photo = vm.getPhoto(at: indexPath.item),
                let first = photo.getFirstImageLink(),
                let url = URL(string: first) {
                 let token = vm.loadImage(from: url) { image in
                     DispatchQueue.main.async {
-                        if cell.tag == indexPath.row {
+                        if cell.tag == indexPath.item {
                             cell.imageView.image = image
                             cell.layoutSubviews()
                         }
@@ -115,7 +116,6 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         vm.minInteritemSpacing
     }
-
 }
 
 extension PhotoCollectionViewController: PhotoViewModelDelegate {

@@ -20,10 +20,10 @@ protocol PhotoViewModelDelegate: AnyObject {
 }
 
 class PhotoViewModel {
-    private var photos = [Gallery]()
-    private var currentPage = 0
     private let maxPage = 5
+    private(set) var currentPage = 0
     private(set) var style: CollectionViewStyle = .grid
+    private(set) var photos = [Gallery]()
     private var cancellables: Set<AnyCancellable> = []
     weak var delegate: PhotoViewModelDelegate?
         
