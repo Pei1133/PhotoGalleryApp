@@ -6,16 +6,19 @@
 //
 
 import UIKit
+import Combine
 
 private let reuseIdentifier = "Cell"
 
 class PhotoCollectionViewController: UICollectionViewController {
 
     let vm = PhotoViewModel()
+    private var cancellables: Set<AnyCancellable> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        vm.delegate = self
     }
 
     func setupCollectionView() {
@@ -29,8 +32,18 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        return cell
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? GridCell {
+            if let photo = vm.getPhoto(at: indexPath.row),
+               let first = photo.getFirstImageLink(),
+               let url = URL(string: first) {
+                vm.loadImage(from: url)
+                    .assign(to: \.image, on: cell.imageView)
+                    .store(in: &self.cancellables)
+            }
+            return cell
+        }
+        return UICollectionViewCell()
+    }
     }
 }
 
@@ -48,4 +61,12 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
         vm.minInteritemSpacing
     }
 
+}
+
+extension PhotoCollectionViewController: PhotoViewModelDelegate {
+    func photosSearched() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
 }
