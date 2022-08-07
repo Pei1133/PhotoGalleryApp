@@ -8,6 +8,13 @@
 import UIKit
 import Combine
 
+enum CollectionViewStyle: String, CaseIterable {
+    case grid
+    case list
+    
+    static let allStyleName: [String] = CollectionViewStyle.allCases.map { $0.rawValue }
+}
+
 protocol PhotoViewModelDelegate: AnyObject {
     func photosSearched()
 }
@@ -16,6 +23,7 @@ class PhotoViewModel {
     private var photos = [Gallery]()
     private var currentPage = 0
     private let maxPage = 5
+    private(set) var style: CollectionViewStyle = .grid
     private var cancellables: Set<AnyCancellable> = []
     weak var delegate: PhotoViewModelDelegate?
         
@@ -36,9 +44,16 @@ class PhotoViewModel {
     }
     
     var photoSize: CGSize {
+        var itemSize: CGSize = CGSize.zero
         let fullScreenSize = UIScreen.main.bounds.size
-        let lengh: CGFloat = floor(CGFloat(fullScreenSize.width)/3) - 1
-        let itemSize = CGSize(width: lengh, height: lengh)
+        switch style {
+        case .list:
+            let lengh: CGFloat = fullScreenSize.width - (40.0 * 2)
+            itemSize = CGSize(width: lengh, height: lengh)
+        case .grid:
+            let lengh: CGFloat = floor(CGFloat(fullScreenSize.width)/3) - 1
+            itemSize = CGSize(width: lengh, height: lengh)
+        }
         return itemSize
     }
     
@@ -48,8 +63,20 @@ class PhotoViewModel {
     
     var minLineSpacing: CGFloat {
         var spacing: CGFloat = CGFloat.zero
+        switch style {
+        case .list:
+            spacing = 40
+        case .grid:
+            spacing = 1
+        }
         return spacing
     }
+    
+    func changeCollectionViewStyle(index: Int) {
+        let styleName = CollectionViewStyle.allStyleName[index]
+        style = CollectionViewStyle.init(rawValue: styleName) ?? .grid
+    }
+    
     func getPhoto(at index: Int) -> Gallery? {
         guard photos.count > index else { return nil }
         return photos[index]

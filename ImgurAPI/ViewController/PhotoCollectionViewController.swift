@@ -13,16 +13,48 @@ private let reuseIdentifier = "Cell"
 class PhotoCollectionViewController: UICollectionViewController {
 
     let vm = PhotoViewModel()
+
+    lazy var sizeSegmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl(items: CollectionViewStyle.allStyleName)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(changeCollectionViewStyle), for: .valueChanged)
+        segmentedControl.selectedSegmentTintColor = UIColor(red: 70, green: 70, blue: 70, alpha: 0.4)
+        segmentedControl.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+        return segmentedControl
+    }()
+    
+    @objc func changeCollectionViewStyle() {
+        vm.changeCollectionViewStyle(index: sizeSegmentedControl.selectedSegmentIndex)
+         
+        self.collectionView.performBatchUpdates({
+            self.collectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
+        }, completion: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectionView()
+        setupView()
         vm.delegate = self
     }
 
+    func setupView() {
+        setupCollectionView()
+        self.view.addSubview(sizeSegmentedControl)
+        setupConstraints()
+    }
+    
     func setupCollectionView() {
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.backgroundColor = UIColor.black
+        self.collectionView!.register(GridCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+    }
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            sizeSegmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            sizeSegmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
+            sizeSegmentedControl.heightAnchor.constraint(equalToConstant: 30),
+            sizeSegmentedControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+        ])
     }
 
     // MARK: -UICollectionViewDataSource
