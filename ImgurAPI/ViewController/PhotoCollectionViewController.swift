@@ -26,10 +26,8 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     @objc func changeCollectionViewStyle() {
         vm.changeCollectionViewStyle(index: sizeSegmentedControl.selectedSegmentIndex)
-         
-        self.collectionView.performBatchUpdates({
-            self.collectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
-        }, completion: nil)
+        self.collectionView.reloadData()
+        self.addLayoutAnimate()
     }
     
     override func viewDidLoad() {
@@ -55,6 +53,16 @@ class PhotoCollectionViewController: UICollectionViewController {
             sizeSegmentedControl.heightAnchor.constraint(equalToConstant: 30),
             sizeSegmentedControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
         ])
+    }
+    
+    func addLayoutAnimate() {
+        self.view.alpha = 0
+        self.view.transform = CGAffineTransform(translationX: self.view.bounds.width, y: self.view.bounds.height / 3).concatenating(CGAffineTransform(scaleX: 0.5, y: 0.5))
+        
+        UIView.animate(withDuration: 0.4) {
+            self.view.alpha = 1
+            self.view.transform = CGAffineTransform.identity
+        }
     }
 
     // MARK: -UICollectionViewDataSource
