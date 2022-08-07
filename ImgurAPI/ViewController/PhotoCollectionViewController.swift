@@ -13,7 +13,6 @@ private let reuseIdentifier = "Cell"
 class PhotoCollectionViewController: UICollectionViewController {
 
     let vm = PhotoViewModel()
-    private var cancellables: Set<AnyCancellable> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,9 +35,12 @@ class PhotoCollectionViewController: UICollectionViewController {
             if let photo = vm.getPhoto(at: indexPath.row),
                let first = photo.getFirstImageLink(),
                let url = URL(string: first) {
-                vm.loadImage(from: url)
-                    .assign(to: \.image, on: cell.imageView)
-                    .store(in: &self.cancellables)
+                let token = vm.loadImage(from: url) { image in
+                    DispatchQueue.main.async {
+                        cell.imageView.image = image
+                        cell.layoutSubviews()
+                    }
+                }
             }
             return cell
         }

@@ -22,6 +22,10 @@ class PhotoViewModel {
         return ImgurAPI()
     }()
     
+    lazy var imageLoader: ImageLoader = {
+        return ImageLoader()
+    }()
+    
     init() {
         searchGallery()
     }
@@ -67,12 +71,18 @@ class PhotoViewModel {
                 print("galleries: \(String(describing: galleries.count)), total image count:\(String(describing: totalImages))")
             }.store(in: &self.cancellables)
     }
-    func loadImage(from url: URL) -> AnyPublisher<UIImage?, Never> {
-        return URLSession.shared.dataTaskPublisher(for: url)
-            .map { (data, response) -> UIImage? in return UIImage(data: data) }
-            .catch { error in return Just(nil) }
-            .print("Image loading \(url):")
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
+    
+    func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) -> UUID? {
+        let token = imageLoader.loadImage(from: url) { result in
+            switch result {
+            case .success(let image):
+                completion(image)
+            case .failure(let error):
+                print(error)
+                completion(nil)
+            }
+        }
+        return token
+    }
     }
 }

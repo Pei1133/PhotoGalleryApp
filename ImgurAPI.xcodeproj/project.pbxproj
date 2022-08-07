@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E4CC5CF289E6F0600258745 /* GridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4CC5CE289E6F0600258745 /* GridCell.swift */; };
 		1E4CC5D2289E80F500258745 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4CC5D1289E80F500258745 /* PhotoViewModel.swift */; };
+		1E4CC5D4289EE4CE00258745 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4CC5D3289EE4CE00258745 /* ImageLoader.swift */; };
 		1E4CC5D8289FF08200258745 /* PhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4CC5D7289FF08200258745 /* PhotoCollectionViewController.swift */; };
 		AD4FA279281AD44C00BBCACA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4FA278281AD44C00BBCACA /* AppDelegate.swift */; };
 		AD4FA27B281AD44C00BBCACA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4FA27A281AD44C00BBCACA /* SceneDelegate.swift */; };
@@ -45,6 +47,7 @@
 /* Begin PBXFileReference section */
 		1E4CC5CE289E6F0600258745 /* GridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCell.swift; sourceTree = "<group>"; };
 		1E4CC5D1289E80F500258745 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
+		1E4CC5D3289EE4CE00258745 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		1E4CC5D7289FF08200258745 /* PhotoCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewController.swift; sourceTree = "<group>"; };
 		AD4FA275281AD44C00BBCACA /* ImgurAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImgurAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD4FA278281AD44C00BBCACA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -139,9 +142,9 @@
 		AD4FA277281AD44C00BBCACA /* ImgurAPI */ = {
 			isa = PBXGroup;
 			children = (
-				AD4FA2AB281AE9B300BBCACA /* Model */,
 				AD4FA2A8281ADC8200BBCACA /* Networking */,
 				AD8434EE28203C1000709C94 /* Utils */,
+				AD4FA2AB281AE9B300BBCACA /* Model */,
 				1E4CC5D6289FCA1B00258745 /* View */,
 				1E4CC5D0289E807100258745 /* ViewModels */,
 				1E4CC5D5289FCA0500258745 /* ViewController */,
@@ -175,6 +178,7 @@
 		AD4FA2A8281ADC8200BBCACA /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				1E4CC5D3289EE4CE00258745 /* ImageLoader.swift */,
 				AD4FA2A9281ADC9200BBCACA /* ImgurAPI.swift */,
 			);
 			path = Networking;
@@ -343,6 +347,7 @@
 				AD8434F028203C2200709C94 /* Publisher+Utils.swift in Sources */,
 				1E4CC5CF289E6F0600258745 /* GridCell.swift in Sources */,
 				AD875F2E281BF5950026479C /* GallerySearchResult.swift in Sources */,
+				1E4CC5D4289EE4CE00258745 /* ImageLoader.swift in Sources */,
 				AD875F2C281BF58C0026479C /* Gallery.swift in Sources */,
 				AD4FA27B281AD44C00BBCACA /* SceneDelegate.swift in Sources */,
 				AD875F2A281BF4380026479C /* GalleryImage.swift in Sources */,
